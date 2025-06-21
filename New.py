@@ -228,16 +228,17 @@ def open_chrome_instance(driver_path, profile_path, window_index, url=None):
             else:
                 auth_token = auth_tokens[0]
                 try:
-                    # Navigate to Twitter
-                    browser.get("https://x.com/i/flow/login")
-                    
+                    # Navigate to Twitter home page (no redirect to developer portal)
+                    login_url = "https://x.com/home"
+                    browser.get(login_url)
+
                     # Set auth token cookie
                     script = f"""
                     document.cookie = "auth_token={auth_token}; path=/; domain=.x.com; secure";
                     location.reload();
                     """
                     browser.execute_script(script)
-                    
+
                     # Verify login
                     home_xpath = "//a[@href='/home']"
                     WebDriverWait(browser, 20).until(
